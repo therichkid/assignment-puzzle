@@ -2,9 +2,9 @@
 
 ## How to run
 
-Open `index.html` in a browser.
+Run a local web server that serves `index.html`.
 
-Or in case you want to start a dev server:
+Or use the hot reload server from this project:
 
 - `npm install`
 - `npm run start`
