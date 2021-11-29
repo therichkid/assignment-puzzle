@@ -23,7 +23,7 @@ export const addDragHandlers = (tile) => {
         endTile.style.opacity = "";
         toggleTileGrid(false);
         swapTiles(startTile, endTile);
-        evaluateTileOrder();
+        setTimeout(evaluateTileOrder);
         event.preventDefault();
     };
     tile.ontouchstart = (event) => {
@@ -39,7 +39,7 @@ export const addDragHandlers = (tile) => {
             return;
         }
         swapTiles(startTile, endTile);
-        evaluateTileOrder();
+        setTimeout(evaluateTileOrder);
     };
 };
 const findTiles = (startTileId, endTileId) => {

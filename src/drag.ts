@@ -31,7 +31,7 @@ export const addDragHandlers = (tile: HTMLDivElement): void => {
 		toggleTileGrid(false);
 
 		swapTiles(startTile, endTile);
-		evaluateTileOrder();
+		setTimeout(evaluateTileOrder);
 
 		event.preventDefault();
 	};
@@ -55,7 +55,7 @@ export const addDragHandlers = (tile: HTMLDivElement): void => {
 		}
 
 		swapTiles(startTile, endTile);
-		evaluateTileOrder();
+		setTimeout(evaluateTileOrder);
 	};
 };
 
