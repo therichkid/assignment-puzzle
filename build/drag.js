@@ -26,21 +26,6 @@ export const addDragHandlers = (tile) => {
         setTimeout(evaluateTileOrder);
         event.preventDefault();
     };
-    tile.ontouchstart = (event) => {
-        toggleTileGrid(true);
-        event.preventDefault();
-    };
-    tile.ontouchend = (event) => {
-        const [endX, endY] = [event.changedTouches[0].pageX, event.changedTouches[0].pageY];
-        const startTile = event.target;
-        const endTile = document.elementFromPoint(endX, endY);
-        toggleTileGrid(false);
-        if (!endTile || endTile.tagName !== "DIV" || typeof parseInt(endTile.id, 10) !== "number") {
-            return;
-        }
-        swapTiles(startTile, endTile);
-        setTimeout(evaluateTileOrder);
-    };
 };
 const findTiles = (startTileId, endTileId) => {
     let startTileIndex = -1;
@@ -58,7 +43,7 @@ const findTiles = (startTileId, endTileId) => {
     const endTile = refs.imageContainer.childNodes[endTileIndex];
     return { startTile, endTile };
 };
-const swapTiles = (tile1, tile2) => {
+export const swapTiles = (tile1, tile2) => {
     const next2 = tile2.nextSibling;
     if (next2 === tile1) {
         refs.imageContainer.insertBefore(tile1, tile2);
@@ -68,7 +53,7 @@ const swapTiles = (tile1, tile2) => {
         refs.imageContainer.insertBefore(tile1, next2);
     }
 };
-const toggleTileGrid = (shouldShow) => {
+export const toggleTileGrid = (shouldShow) => {
     const tiles = Array.from(refs.imageContainer.childNodes);
     tiles.forEach(tile => {
         if (shouldShow) {
@@ -79,7 +64,7 @@ const toggleTileGrid = (shouldShow) => {
         }
     });
 };
-const evaluateTileOrder = () => {
+export const evaluateTileOrder = () => {
     const tiles = Array.from(refs.imageContainer.childNodes);
     if (tiles.every((tile, i) => parseInt(tile.id, 10) === i)) {
         alert("Congratulations, all tiles are in order!");

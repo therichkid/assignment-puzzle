@@ -35,28 +35,6 @@ export const addDragHandlers = (tile: HTMLDivElement): void => {
 
 		event.preventDefault();
 	};
-
-	tile.ontouchstart = (event: TouchEvent): void => {
-		toggleTileGrid(true);
-
-		event.preventDefault();
-	};
-
-	tile.ontouchend = (event: TouchEvent): void => {
-		const [endX, endY] = [event.changedTouches[0].pageX, event.changedTouches[0].pageY];
-
-		const startTile = <HTMLDivElement>event.target;
-		const endTile = <HTMLDivElement>document.elementFromPoint(endX, endY);
-
-		toggleTileGrid(false);
-
-		if (!endTile || endTile.tagName !== "DIV" || typeof parseInt(endTile.id, 10) !== "number") {
-			return;
-		}
-
-		swapTiles(startTile, endTile);
-		setTimeout(evaluateTileOrder);
-	};
 };
 
 const findTiles = (startTileId: string, endTileId: string): { startTile: HTMLDivElement; endTile: HTMLDivElement } => {
@@ -79,7 +57,7 @@ const findTiles = (startTileId: string, endTileId: string): { startTile: HTMLDiv
 	return { startTile, endTile };
 };
 
-const swapTiles = (tile1: HTMLDivElement, tile2: HTMLDivElement): void => {
+export const swapTiles = (tile1: HTMLDivElement, tile2: HTMLDivElement): void => {
 	const next2 = tile2.nextSibling;
 
 	if (next2 === tile1) {
@@ -90,7 +68,7 @@ const swapTiles = (tile1: HTMLDivElement, tile2: HTMLDivElement): void => {
 	}
 };
 
-const toggleTileGrid = (shouldShow: boolean): void => {
+export const toggleTileGrid = (shouldShow: boolean): void => {
 	const tiles = <HTMLDivElement[]>Array.from(refs.imageContainer.childNodes);
 	tiles.forEach(tile => {
 		if (shouldShow) {
@@ -101,7 +79,7 @@ const toggleTileGrid = (shouldShow: boolean): void => {
 	});
 };
 
-const evaluateTileOrder = (): void => {
+export const evaluateTileOrder = (): void => {
 	const tiles = <HTMLDivElement[]>Array.from(refs.imageContainer.childNodes);
 	if (tiles.every((tile, i) => parseInt(tile.id, 10) === i)) {
 		alert("Congratulations, all tiles are in order!");
