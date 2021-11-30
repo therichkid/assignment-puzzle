@@ -18,6 +18,7 @@ The project is written in TypeScript, all TS sources are under `src/` and are tr
 - `config.ts` - user config: change number of columns and rows
 - `main.ts` - main module, includes the methods run on init, element event listeners and their methods
 - `drag.ts` - event handlers on the tiles for drag and drop
+- `mobile-drag.ts` - mobile event handlers on the tiles for drag and drop
 - `tile.ts` - tile generation
 - `refs.ts` - stores the references of multiple DOM elements
 
