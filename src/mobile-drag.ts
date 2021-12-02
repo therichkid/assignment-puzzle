@@ -1,5 +1,6 @@
 import { evaluateTileOrder, swapTiles, toggleTileGrid } from "./drag.js";
 import { refs } from "./refs.js";
+import { throttle } from "./throttle.js";
 
 export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
 	tile.ontouchstart = (event: TouchEvent): void => {
@@ -12,10 +13,10 @@ export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
 		event.preventDefault();
 	};
 
-	tile.ontouchmove = (event: TouchEvent): void => {
+	tile.ontouchmove = throttle((event: TouchEvent): void => {
 		const { pageX: currX, pageY: currY } = event.changedTouches[0];
 		moveDragTile([currX, currY]);
-	};
+	}, 20);
 
 	tile.ontouchend = (event: TouchEvent): void => {
 		const { pageX: endX, pageY: endY } = event.changedTouches[0];
