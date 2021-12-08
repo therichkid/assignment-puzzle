@@ -40,7 +40,7 @@ export const toggleTileGrid = (shouldShow) => {
     });
 };
 export const wasDroppedOnTile = (endTile) => {
-    return endTile && endTile.tagName === "DIV" && typeof parseInt(endTile.id, 10) === "number";
+    return endTile && endTile.tagName === "DIV" && !isNaN(parseInt(endTile.id, 10));
 };
 export const evaluateTileOrder = () => {
     const tiles = Array.from(refs.imageContainer.childNodes);

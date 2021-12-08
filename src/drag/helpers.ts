@@ -52,7 +52,7 @@ export const toggleTileGrid = (shouldShow: boolean): void => {
 };
 
 export const wasDroppedOnTile = (endTile: HTMLDivElement): boolean => {
-	return endTile && endTile.tagName === "DIV" && typeof parseInt(endTile.id, 10) === "number";
+	return endTile && endTile.tagName === "DIV" && !isNaN(parseInt(endTile.id, 10));
 };
 
 export const evaluateTileOrder = (): void => {
