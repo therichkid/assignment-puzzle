@@ -5,7 +5,7 @@ export const swapNodes = (node1: Node, node2: Node): void => {
 	if (next2 === node1) {
 		parent2.insertBefore(node1, node2);
 	} else {
-		(node1.parentNode as Node).insertBefore(node2, node1);
+		(<Node>node1.parentNode).insertBefore(node2, node1);
 		parent2.insertBefore(node1, next2);
 	}
 };
