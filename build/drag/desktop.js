@@ -1,6 +1,7 @@
 import { refs } from "../refs.js";
+import { swapNodes } from "../swap.js";
 import { throttle } from "../throttle.js";
-import { evaluateTileOrder, moveDragTile, setDragTile, swapTiles, toggleTileGrid, unsetDragTile, wasDroppedOnTile } from "./helpers.js";
+import { evaluateTileOrder, moveDragTile, setDragTile, toggleTileGrid, unsetDragTile, wasDroppedOnTile } from "./helpers.js";
 export const addDragHandlers = (tile) => {
     tile.onmousedown = (event) => {
         toggleTileGrid(true);
@@ -17,18 +18,16 @@ const onMouseDownMove = throttle((event) => {
     moveDragTile([currX, currY]);
 }, 20);
 const onMouseUp = (event) => {
-    var _a;
     window.removeEventListener("mousemove", onMouseDownMove);
     window.removeEventListener("mouseup", onMouseUp);
     toggleTileGrid(false);
-    unsetDragTile();
     const { pageX: endX, pageY: endY } = event;
+    const startTile = refs.dragTile;
     const [, endTile] = document.elementsFromPoint(endX, endY);
+    unsetDragTile();
     if (!wasDroppedOnTile(endTile)) {
         return;
     }
-    const startTileContainer = (_a = refs.dragTile) === null || _a === void 0 ? void 0 : _a.parentElement;
-    const endTileContainer = endTile.parentElement;
-    swapTiles(startTileContainer, endTileContainer);
+    swapNodes(startTile, endTile);
     setTimeout(evaluateTileOrder);
 };

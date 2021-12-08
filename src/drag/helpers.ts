@@ -55,17 +55,6 @@ export const wasDroppedOnTile = (endTile: HTMLDivElement): boolean => {
 	return endTile && endTile.tagName === "DIV" && typeof parseInt(endTile.id, 10) === "number";
 };
 
-export const swapTiles = (tile1: HTMLDivElement, tile2: HTMLDivElement): void => {
-	const next2 = tile2.nextSibling;
-
-	if (next2 === tile1) {
-		refs.imageContainer.insertBefore(tile1, tile2);
-	} else {
-		refs.imageContainer.insertBefore(tile2, tile1);
-		refs.imageContainer.insertBefore(tile1, next2);
-	}
-};
-
 export const evaluateTileOrder = (): void => {
 	const tiles = <HTMLDivElement[]>Array.from(refs.imageContainer.childNodes);
 	if (tiles.every((tile, i) => parseInt(tile.children[0].id, 10) === i)) {

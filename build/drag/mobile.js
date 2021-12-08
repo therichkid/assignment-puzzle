@@ -1,6 +1,7 @@
 import { refs } from "../refs.js";
+import { swapNodes } from "../swap.js";
 import { throttle } from "../throttle.js";
-import { evaluateTileOrder, moveDragTile, setDragTile, swapTiles, toggleTileGrid, unsetDragTile, wasDroppedOnTile } from "./helpers.js";
+import { evaluateTileOrder, moveDragTile, setDragTile, toggleTileGrid, unsetDragTile, wasDroppedOnTile } from "./helpers.js";
 export const addMobileDragHandlers = (tile) => {
     tile.ontouchstart = (event) => {
         toggleTileGrid(true);
@@ -14,17 +15,15 @@ export const addMobileDragHandlers = (tile) => {
         moveDragTile([currX, currY]);
     }, 20);
     tile.ontouchend = (event) => {
-        var _a;
         toggleTileGrid(false);
-        unsetDragTile();
         const { pageX: endX, pageY: endY } = event.changedTouches[0];
+        const startTile = refs.dragTile;
         const [, endTile] = document.elementsFromPoint(endX, endY);
+        unsetDragTile();
         if (!wasDroppedOnTile(endTile)) {
             return;
         }
-        const startTileContainer = (_a = refs.dragTile) === null || _a === void 0 ? void 0 : _a.parentElement;
-        const endTileContainer = endTile.parentElement;
-        swapTiles(startTileContainer, endTileContainer);
+        swapNodes(startTile, endTile);
         setTimeout(evaluateTileOrder);
     };
 };

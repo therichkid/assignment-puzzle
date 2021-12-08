@@ -1,10 +1,10 @@
 import { refs } from "../refs.js";
+import { swapNodes } from "../swap.js";
 import { throttle } from "../throttle.js";
 import {
 	evaluateTileOrder,
 	moveDragTile,
 	setDragTile,
-	swapTiles,
 	toggleTileGrid,
 	unsetDragTile,
 	wasDroppedOnTile
@@ -29,18 +29,17 @@ export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
 	tile.ontouchend = (event: TouchEvent): void => {
 		toggleTileGrid(false);
 
-		unsetDragTile();
-
 		const { pageX: endX, pageY: endY } = event.changedTouches[0];
+		const startTile = <HTMLDivElement>refs.dragTile;
 		const [, endTile] = <HTMLDivElement[]>document.elementsFromPoint(endX, endY);
+
+		unsetDragTile();
 
 		if (!wasDroppedOnTile(endTile)) {
 			return;
 		}
 
-		const startTileContainer = <HTMLDivElement>refs.dragTile?.parentElement;
-		const endTileContainer = <HTMLDivElement>endTile.parentElement;
-		swapTiles(startTileContainer, endTileContainer);
+		swapNodes(startTile, endTile);
 
 		setTimeout(evaluateTileOrder);
 	};

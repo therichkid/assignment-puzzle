@@ -42,16 +42,6 @@ export const toggleTileGrid = (shouldShow) => {
 export const wasDroppedOnTile = (endTile) => {
     return endTile && endTile.tagName === "DIV" && typeof parseInt(endTile.id, 10) === "number";
 };
-export const swapTiles = (tile1, tile2) => {
-    const next2 = tile2.nextSibling;
-    if (next2 === tile1) {
-        refs.imageContainer.insertBefore(tile1, tile2);
-    }
-    else {
-        refs.imageContainer.insertBefore(tile2, tile1);
-        refs.imageContainer.insertBefore(tile1, next2);
-    }
-};
 export const evaluateTileOrder = () => {
     const tiles = Array.from(refs.imageContainer.childNodes);
     if (tiles.every((tile, i) => parseInt(tile.children[0].id, 10) === i)) {
