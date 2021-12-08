@@ -39,6 +39,9 @@ export const toggleTileGrid = (shouldShow) => {
         }
     });
 };
+export const wasDroppedOnTile = (endTile) => {
+    return endTile && endTile.tagName === "DIV" && typeof parseInt(endTile.id, 10) === "number";
+};
 export const swapTiles = (tile1, tile2) => {
     const next2 = tile2.nextSibling;
     if (next2 === tile1) {

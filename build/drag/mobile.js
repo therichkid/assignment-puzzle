@@ -1,5 +1,6 @@
+import { refs } from "../refs.js";
 import { throttle } from "../throttle.js";
-import { evaluateTileOrder, moveDragTile, setDragTile, swapTiles, toggleTileGrid, unsetDragTile } from "./helpers.js";
+import { evaluateTileOrder, moveDragTile, setDragTile, swapTiles, toggleTileGrid, unsetDragTile, wasDroppedOnTile } from "./helpers.js";
 export const addMobileDragHandlers = (tile) => {
     tile.ontouchstart = (event) => {
         toggleTileGrid(true);
@@ -13,15 +14,15 @@ export const addMobileDragHandlers = (tile) => {
         moveDragTile([currX, currY]);
     }, 20);
     tile.ontouchend = (event) => {
-        const { pageX: endX, pageY: endY } = event.changedTouches[0];
-        const startTile = event.target;
-        const [, endTile] = document.elementsFromPoint(endX, endY);
+        var _a;
         toggleTileGrid(false);
         unsetDragTile();
-        if (!endTile || endTile.tagName !== "DIV" || typeof parseInt(endTile.id, 10) !== "number") {
+        const { pageX: endX, pageY: endY } = event.changedTouches[0];
+        const [, endTile] = document.elementsFromPoint(endX, endY);
+        if (!wasDroppedOnTile(endTile)) {
             return;
         }
-        const startTileContainer = startTile.parentElement;
+        const startTileContainer = (_a = refs.dragTile) === null || _a === void 0 ? void 0 : _a.parentElement;
         const endTileContainer = endTile.parentElement;
         swapTiles(startTileContainer, endTileContainer);
         setTimeout(evaluateTileOrder);
