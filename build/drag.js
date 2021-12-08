@@ -66,7 +66,7 @@ export const toggleTileGrid = (shouldShow) => {
 };
 export const evaluateTileOrder = () => {
     const tiles = Array.from(refs.imageContainer.childNodes);
-    if (tiles.every((tile, i) => parseInt(tile.id, 10) === i)) {
+    if (tiles.every((tile, i) => parseInt(tile.children[0].id, 10) === i)) {
         alert("Congratulations, all tiles are in order!");
     }
 };

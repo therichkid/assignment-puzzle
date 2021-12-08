@@ -15,12 +15,17 @@ export const generateTiles = (): HTMLDivElement[] => {
 		tile.style.backgroundImage = `url("${refs.imageSelect.value}")`;
 		tile.style.backgroundPosition = `${calcXPos(i)}% ${calcYPos(i)}%`;
 		tile.style.backgroundSize = `${xSize}% ${ySize}%`;
+		tile.style.width = "100%";
+		tile.style.height = "100%";
 
 		tile.id = `${i}`;
 		addDragHandlers(tile);
 		addMobileDragHandlers(tile);
 
-		tiles.push(tile);
+		const tileContainer = document.createElement("div");
+		tileContainer.appendChild(tile);
+
+		tiles.push(tileContainer);
 	}
 
 	return tiles;

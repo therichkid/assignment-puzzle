@@ -1,5 +1,4 @@
 import { evaluateTileOrder, swapTiles, toggleTileGrid } from "./drag.js";
-import { refs } from "./refs.js";
 import { throttle } from "./throttle.js";
 
 export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
@@ -8,14 +7,15 @@ export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
 
 		const startTile = <HTMLDivElement>event.target;
 		const { pageX: startX, pageY: startY } = event.changedTouches[0];
-		addDragTile(startTile, [startX, startY]);
+		setDragTile(startTile, [startX, startY]);
 
 		event.preventDefault();
 	};
 
 	tile.ontouchmove = throttle((event: TouchEvent): void => {
+		const dragTile = <HTMLDivElement>event.target;
 		const { pageX: currX, pageY: currY } = event.changedTouches[0];
-		moveDragTile([currX, currY]);
+		moveDragTile(dragTile, [currX, currY]);
 	}, 20);
 
 	tile.ontouchend = (event: TouchEvent): void => {
@@ -25,44 +25,40 @@ export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
 		const [, endTile] = <HTMLDivElement[]>document.elementsFromPoint(endX, endY);
 
 		toggleTileGrid(false);
-		removeDragTile();
+		unsetDragTile(startTile);
 
 		if (!endTile || endTile.tagName !== "DIV" || typeof parseInt(endTile.id, 10) !== "number") {
 			return;
 		}
 
-		swapTiles(startTile, endTile);
+		const startTileContainer = <HTMLDivElement>startTile.parentElement;
+		const endTileContainer = <HTMLDivElement>endTile.parentElement;
+
+		swapTiles(startTileContainer, endTileContainer);
 		setTimeout(evaluateTileOrder);
 	};
 };
 
-const addDragTile = (tileToClone: HTMLDivElement, [x, y]: [number, number]): void => {
-	const { width, height } = tileToClone.getBoundingClientRect();
+const setDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): void => {
+	const { width, height } = tile.getBoundingClientRect();
 
-	const dragTile = <HTMLDivElement>tileToClone.cloneNode();
-	dragTile.id = "drag-tile";
-	dragTile.style.left = `${x - width / 2}px`;
-	dragTile.style.top = `${y - height / 2}px`;
-	dragTile.style.width = `${width}px`;
-	dragTile.style.height = `${height}px`;
-
-	refs.imageContainer.appendChild(dragTile);
-
-	refs.dragTile = dragTile;
+	tile.style.position = "fixed";
+	tile.style.left = `${x - width / 2}px`;
+	tile.style.top = `${y - height / 2}px`;
+	tile.style.width = `${width}px`;
+	tile.style.height = `${height}px`;
 };
 
-const moveDragTile = ([x, y]: [number, number]): void => {
-	if (!refs.dragTile) {
-		return;
-	}
+const moveDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): void => {
+	const width = parseInt(tile.style.width, 10);
+	const height = parseInt(tile.style.height, 10);
 
-	const { width, height } = refs.dragTile.getBoundingClientRect();
-
-	refs.dragTile.style.left = `${x - width / 2}px`;
-	refs.dragTile.style.top = `${y - height / 2}px`;
+	tile.style.left = `${x - width / 2}px`;
+	tile.style.top = `${y - height / 2}px`;
 };
 
-const removeDragTile = (): void => {
-	refs.dragTile?.remove();
-	refs.dragTile = null;
+const unsetDragTile = (tile: HTMLDivElement): void => {
+	tile.style.position = tile.style.left = tile.style.top = "";
+	tile.style.width = "100%";
+	tile.style.height = "100%";
 };
