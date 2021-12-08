@@ -39,7 +39,7 @@ export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
 	};
 };
 
-const setDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): void => {
+export const setDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): void => {
 	const { width, height } = tile.getBoundingClientRect();
 
 	tile.style.position = "fixed";
@@ -49,7 +49,7 @@ const setDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): void => {
 	tile.style.height = `${height}px`;
 };
 
-const moveDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): void => {
+export const moveDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): void => {
 	const width = parseInt(tile.style.width, 10);
 	const height = parseInt(tile.style.height, 10);
 
@@ -57,7 +57,7 @@ const moveDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): void => {
 	tile.style.top = `${y - height / 2}px`;
 };
 
-const unsetDragTile = (tile: HTMLDivElement): void => {
+export const unsetDragTile = (tile: HTMLDivElement): void => {
 	tile.style.position = tile.style.left = tile.style.top = "";
 	tile.style.width = "100%";
 	tile.style.height = "100%";

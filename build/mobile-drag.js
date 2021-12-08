@@ -28,7 +28,7 @@ export const addMobileDragHandlers = (tile) => {
         setTimeout(evaluateTileOrder);
     };
 };
-const setDragTile = (tile, [x, y]) => {
+export const setDragTile = (tile, [x, y]) => {
     const { width, height } = tile.getBoundingClientRect();
     tile.style.position = "fixed";
     tile.style.left = `${x - width / 2}px`;
@@ -36,13 +36,13 @@ const setDragTile = (tile, [x, y]) => {
     tile.style.width = `${width}px`;
     tile.style.height = `${height}px`;
 };
-const moveDragTile = (tile, [x, y]) => {
+export const moveDragTile = (tile, [x, y]) => {
     const width = parseInt(tile.style.width, 10);
     const height = parseInt(tile.style.height, 10);
     tile.style.left = `${x - width / 2}px`;
     tile.style.top = `${y - height / 2}px`;
 };
-const unsetDragTile = (tile) => {
+export const unsetDragTile = (tile) => {
     tile.style.position = tile.style.left = tile.style.top = "";
     tile.style.width = "100%";
     tile.style.height = "100%";

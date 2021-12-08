@@ -1,47 +1,37 @@
+import { moveDragTile, setDragTile, unsetDragTile } from "./mobile-drag.js";
 import { refs } from "./refs.js";
+import { throttle } from "./throttle.js";
 export const addDragHandlers = (tile) => {
-    tile.setAttribute("draggable", "true");
-    tile.ondragstart = (event) => {
-        var _a;
-        (_a = event.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("text/plain", tile.id);
+    tile.onmousedown = (event) => {
         toggleTileGrid(true);
-    };
-    tile.ondragenter = (event) => {
-        event.target.style.opacity = "0.25";
-    };
-    tile.ondragover = (event) => {
-        event.preventDefault();
-    };
-    tile.ondragleave = (event) => {
-        event.target.style.opacity = "";
-    };
-    tile.ondrop = (event) => {
-        var _a;
-        const startTileId = ((_a = event.dataTransfer) === null || _a === void 0 ? void 0 : _a.getData("text/plain")) || "";
-        const endTileId = event.target.id;
-        const { startTile, endTile } = findTiles(startTileId, endTileId);
-        endTile.style.opacity = "";
-        toggleTileGrid(false);
-        swapTiles(startTile, endTile);
-        setTimeout(evaluateTileOrder);
+        const startTile = event.target;
+        const { pageX: startX, pageY: startY } = event;
+        setDragTile(startTile, [startX, startY]);
+        window.addEventListener("mousemove", onMouseDownMove);
+        window.addEventListener("mouseup", onMouseUp);
         event.preventDefault();
     };
 };
-const findTiles = (startTileId, endTileId) => {
-    let startTileIndex = -1;
-    let endTileIndex = -1;
-    refs.imageContainer.childNodes.forEach((node, i) => {
-        const tile = node;
-        if (tile.id === startTileId) {
-            startTileIndex = i;
-        }
-        if (tile.id === endTileId) {
-            endTileIndex = i;
-        }
-    });
-    const startTile = refs.imageContainer.childNodes[startTileIndex];
-    const endTile = refs.imageContainer.childNodes[endTileIndex];
-    return { startTile, endTile };
+const onMouseDownMove = throttle((event) => {
+    const dragTile = event.target;
+    const { pageX: currX, pageY: currY } = event;
+    moveDragTile(dragTile, [currX, currY]);
+}, 20);
+const onMouseUp = (event) => {
+    window.removeEventListener("mousemove", onMouseDownMove);
+    window.removeEventListener("mouseup", onMouseUp);
+    const { pageX: endX, pageY: endY } = event;
+    const startTile = event.target;
+    const [, endTile] = document.elementsFromPoint(endX, endY);
+    toggleTileGrid(false);
+    unsetDragTile(startTile);
+    if (!endTile || endTile.tagName !== "DIV" || typeof parseInt(endTile.id, 10) !== "number") {
+        return;
+    }
+    const startTileContainer = startTile.parentElement;
+    const endTileContainer = endTile.parentElement;
+    swapTiles(startTileContainer, endTileContainer);
+    setTimeout(evaluateTileOrder);
 };
 export const swapTiles = (tile1, tile2) => {
     const next2 = tile2.nextSibling;
