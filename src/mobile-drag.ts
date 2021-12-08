@@ -1,4 +1,5 @@
 import { evaluateTileOrder, swapTiles, toggleTileGrid } from "./drag.js";
+import { refs } from "./refs.js";
 import { throttle } from "./throttle.js";
 
 export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
@@ -13,9 +14,8 @@ export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
 	};
 
 	tile.ontouchmove = throttle((event: TouchEvent): void => {
-		const dragTile = <HTMLDivElement>event.target;
 		const { pageX: currX, pageY: currY } = event.changedTouches[0];
-		moveDragTile(dragTile, [currX, currY]);
+		moveDragTile([currX, currY]);
 	}, 20);
 
 	tile.ontouchend = (event: TouchEvent): void => {
@@ -25,7 +25,7 @@ export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
 		const [, endTile] = <HTMLDivElement[]>document.elementsFromPoint(endX, endY);
 
 		toggleTileGrid(false);
-		unsetDragTile(startTile);
+		unsetDragTile();
 
 		if (!endTile || endTile.tagName !== "DIV" || typeof parseInt(endTile.id, 10) !== "number") {
 			return;
@@ -47,9 +47,17 @@ export const setDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): voi
 	tile.style.top = `${y - height / 2}px`;
 	tile.style.width = `${width}px`;
 	tile.style.height = `${height}px`;
+
+	refs.dragTile = tile;
 };
 
-export const moveDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): void => {
+export const moveDragTile = ([x, y]: [number, number]): void => {
+	const tile = refs.dragTile;
+
+	if (!tile) {
+		return;
+	}
+
 	const width = parseInt(tile.style.width, 10);
 	const height = parseInt(tile.style.height, 10);
 
@@ -57,8 +65,16 @@ export const moveDragTile = (tile: HTMLDivElement, [x, y]: [number, number]): vo
 	tile.style.top = `${y - height / 2}px`;
 };
 
-export const unsetDragTile = (tile: HTMLDivElement): void => {
+export const unsetDragTile = (): void => {
+	const tile = refs.dragTile;
+
+	if (!tile) {
+		return;
+	}
+
 	tile.style.position = tile.style.left = tile.style.top = "";
 	tile.style.width = "100%";
 	tile.style.height = "100%";
+
+	refs.dragTile = null;
 };

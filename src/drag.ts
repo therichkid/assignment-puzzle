@@ -18,9 +18,8 @@ export const addDragHandlers = (tile: HTMLDivElement): void => {
 };
 
 const onMouseDownMove = throttle((event: MouseEvent): void => {
-	const dragTile = <HTMLDivElement>event.target;
 	const { pageX: currX, pageY: currY } = event;
-	moveDragTile(dragTile, [currX, currY]);
+	moveDragTile([currX, currY]);
 }, 20);
 
 const onMouseUp = (event: MouseEvent): void => {
@@ -33,7 +32,7 @@ const onMouseUp = (event: MouseEvent): void => {
 	const [, endTile] = <HTMLDivElement[]>document.elementsFromPoint(endX, endY);
 
 	toggleTileGrid(false);
-	unsetDragTile(startTile);
+	unsetDragTile();
 
 	if (!endTile || endTile.tagName !== "DIV" || typeof parseInt(endTile.id, 10) !== "number") {
 		return;

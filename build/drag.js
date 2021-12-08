@@ -13,9 +13,8 @@ export const addDragHandlers = (tile) => {
     };
 };
 const onMouseDownMove = throttle((event) => {
-    const dragTile = event.target;
     const { pageX: currX, pageY: currY } = event;
-    moveDragTile(dragTile, [currX, currY]);
+    moveDragTile([currX, currY]);
 }, 20);
 const onMouseUp = (event) => {
     window.removeEventListener("mousemove", onMouseDownMove);
@@ -24,7 +23,7 @@ const onMouseUp = (event) => {
     const startTile = event.target;
     const [, endTile] = document.elementsFromPoint(endX, endY);
     toggleTileGrid(false);
-    unsetDragTile(startTile);
+    unsetDragTile();
     if (!endTile || endTile.tagName !== "DIV" || typeof parseInt(endTile.id, 10) !== "number") {
         return;
     }
