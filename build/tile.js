@@ -1,5 +1,5 @@
 import { NUM_COLS, NUM_ROWS } from "./config.js";
-import { addDragHandlers } from "./drag/desktop.js";
+import { addDesktopDragHandlers } from "./drag/desktop.js";
 import { addMobileDragHandlers } from "./drag/mobile.js";
 import { refs } from "./refs.js";
 export const generateTiles = () => {
@@ -15,7 +15,7 @@ export const generateTiles = () => {
         tile.style.width = "100%";
         tile.style.height = "100%";
         tile.id = `${i}`;
-        addDragHandlers(tile);
+        addDesktopDragHandlers(tile);
         addMobileDragHandlers(tile);
         const tileContainer = document.createElement("div");
         tileContainer.appendChild(tile);

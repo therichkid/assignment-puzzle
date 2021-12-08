@@ -2,7 +2,7 @@ import { refs } from "../refs.js";
 import { swapNodes } from "../swap.js";
 import { throttle } from "../throttle.js";
 import { evaluateTileOrder, moveDragTile, setDragTile, toggleTileGrid, unsetDragTile, wasDroppedOnTile } from "./helpers.js";
-export const addDragHandlers = (tile) => {
+export const addDesktopDragHandlers = (tile) => {
     tile.onmousedown = (event) => {
         toggleTileGrid(true);
         const startTile = event.target;

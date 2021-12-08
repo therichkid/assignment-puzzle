@@ -10,7 +10,7 @@ import {
 	wasDroppedOnTile
 } from "./helpers.js";
 
-export const addDragHandlers = (tile: HTMLDivElement): void => {
+export const addDesktopDragHandlers = (tile: HTMLDivElement): void => {
 	tile.onmousedown = (event: MouseEvent): void => {
 		toggleTileGrid(true);
 
