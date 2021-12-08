@@ -1,5 +1,5 @@
 import { NUM_COLS, NUM_ROWS } from "./config.js";
-import { addDragHandlers } from "./drag/drag.js";
+import { addDragHandlers } from "./drag/desktop.js";
 import { addMobileDragHandlers } from "./drag/mobile.js";
 import { refs } from "./refs.js";
 
