@@ -1,6 +1,6 @@
 import { evaluateTileOrder, swapTiles, toggleTileGrid } from "./drag.js";
-import { refs } from "./refs.js";
-import { throttle } from "./throttle.js";
+import { refs } from "../refs.js";
+import { throttle } from "../throttle.js";
 
 export const addMobileDragHandlers = (tile: HTMLDivElement): void => {
 	tile.ontouchstart = (event: TouchEvent): void => {

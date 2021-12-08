@@ -1,6 +1,6 @@
-import { moveDragTile, setDragTile, unsetDragTile } from "./mobile-drag.js";
-import { refs } from "./refs.js";
-import { throttle } from "./throttle.js";
+import { moveDragTile, setDragTile, unsetDragTile } from "./mobile.js";
+import { refs } from "../refs.js";
+import { throttle } from "../throttle.js";
 export const addDragHandlers = (tile) => {
     tile.onmousedown = (event) => {
         toggleTileGrid(true);
